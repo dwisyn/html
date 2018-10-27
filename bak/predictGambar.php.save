@@ -1,0 +1,19 @@
+<?php
+#$path = "WAJAH/"  
+$base64_string = $_POST['image'];
+$image_name = $path.$_POST['nrp'];
+
+$fullName = $image_name."/".$fileCount.".png";
+$ifp = fopen($fullName, "wb");
+fwrite($ifp, base64_decode($data[1]));
+fclose($ifp);
+if ($ifp)
+{
+	$command = escapeshellcmd("python checkImg.py ".$fullName);
+	$output = shell_exec($command);	 
+	$fi = new FilesystemIterator($image_name, FilesystemIterator::SKIP_DOTS);
+ 	$fileCount = iterator_count($fi);   	
+	$tennisArray = array('msg' => $output." total(".$fileCount.")");
+	echo json_encode($tennisArray);
+}
+?>
